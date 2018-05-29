@@ -1,13 +1,76 @@
 <html>
 <head>
+	<title> Cafe In </title>
+	<meta charset="utf-8">
 </head>
+
+<style>
+
+ h1 {
+ 	text-align: center;
+ 	margin: auto;
+ 	margin-top: 10%;
+ }
+
+ #searchbox {
+ 	text-align: center;
+ 	margin: auto;
+ 	margin-top:5%;
+ }
+
+ .infobutton {
+ 	width: 300px;
+ 	height: 50px;
+ }
+
+  #resultbox {
+ 	text-align: center;
+ 	margin: auto;
+ 	margin-top:5%;
+ }
+
+</style>
 
 <body>
 
-<h1> TEST </h1>
+<h1> Cafe In </h1>
+
+<button style="float:right; margin-right: 20%;" onclick="login();"> 로그인 </button>
+
+<div id="searchbox">
+	<select>
+		<option> 카페명 </option>
+		<option> 장소명 </option>
+	</select>
+	<input id="search" name="_search">
+	<button type="submit"> 검색 </button>
+</div>
+<br>
+<div id="resultbox">
+	<input type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
+	<input type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴정보">
+</div>
+
+
+<script type="text/javascript">
+
+function showcafe() {
+	document.getElementById("infocafe").style.backgroundColor = "lightblue";
+	document.getElementById("infomenu").style.backgroundColor = "buttonface";
+}
+
+function showmenu() {
+	document.getElementById("infomenu").style.backgroundColor = "lightblue";
+	document.getElementById("infocafe").style.backgroundColor = "buttonface";
+}
+
+function login() {
+		location.href = "/login";
+}
+
+</script>
+
+
 
 </body>
-
-
-
 </html>
