@@ -35,15 +35,17 @@
 
 <h1> Cafe In </h1>
 
+<p>현재 사용자: {{ logined_user.username }}</p>
+
 <button style="float:right; margin-right: 20%;" onclick="login();"> 로그인 </button>
 
 <div id="searchbox">
-	<select>
-		<option> 카페명 </option>
-		<option> 장소명 </option>
+	<select id="select">
+		<option value="selectcafe"> 카페명 </option>
+		<option value="selectlocation"> 장소명 </option>
 	</select>
 	<input id="search" name="_search">
-	<button type="submit"> 검색 </button>
+	<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
 </div>
 <br>
 <div id="resultbox">
@@ -53,6 +55,15 @@
 
 
 <script type="text/javascript">
+
+	function searchcafe() {
+		if(document.getElementById("select").value == "selectcafe") {
+			window.open("/cafelist_cafe");
+		}
+		else if(document.getElementById("select").value == "selectlocation") {
+			window.open("/cafelist_location");
+		}
+	}
 
 function showcafe() {
 	document.getElementById("infocafe").style.backgroundColor = "lightblue";

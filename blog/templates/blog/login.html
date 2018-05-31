@@ -14,8 +14,12 @@
 <h1> Cafe In - Login </h1>
 
 아이디 : 
-<input type="text">
 
+<form method="post" action="">
+	{% csrf_token %}
+	<input name ="user_id" type="text">
+	<input type="submit" value="login" />
+</form>
 
 </body>
 </html>

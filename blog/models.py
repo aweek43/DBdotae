@@ -1,17 +1,34 @@
 from django.db import models
 from django.utils import timezone 
  
+
+class User(models.Model):
+    user_id = models.IntegerField()
+    username = models.CharField(max_length=200)
+    sex = models.TextField()
+    age = models.IntegerField()
+    location_id = models.IntegerField()
  
-class Post(models.Model):
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    created_date = models.DateTimeField(default=timezone.now)
-    published_date = models.DateTimeField(blank=True, null=True) 
- 
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save() 
- 
-    def __str__(self):
-        return self.title 
+class Cafe(models.Model):
+    cafe_id =models.IntegerField()
+    cafe_name =models.TextField()
+    cafe_address = models.TextField()
+    location_id = models.IntegerField()
+    opentime = models.TextField()
+    closetime = models.TextField()
+    image_url = models.TextField()
+
+class Location(models.Model):
+    location_id =models.IntegerField()
+    address = models.TextField()
+
+class Coupon(models.Model):
+    user_id =models.IntegerField()
+    cafe_id =models.IntegerField()
+    count =models.IntegerField()
+
+class menu(models.Model):
+    cafe_id =models.IntegerField()
+    menu_name = models.TextField()
+    price =models.IntegerField()
+    menu_code=models.IntegerField()
