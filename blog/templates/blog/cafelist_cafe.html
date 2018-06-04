@@ -1,1 +1,22 @@
-cafe
+<html>
+<head>
+	<title> CafeList - CafeName </title>
+	<meta charset="utf-8">
+</head>
+
+<body>
+
+	<h1> Cafe List </h1>
+
+	{% if resultcafe %}
+		{% for cafe in resultcafe %}
+		<div>
+			<p> {{cafe}} <button type="submit"> 선택 </button> </p>
+		</div>
+		{% endfor %}
+	{% else %}
+		<p> 검색 결과가 없습니다. </p>
+	{% endif %}
+
+</body>
+</html>

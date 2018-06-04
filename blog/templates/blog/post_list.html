@@ -40,12 +40,15 @@
 <button style="float:right; margin-right: 20%;" onclick="login();"> 로그인 </button>
 
 <div id="searchbox">
+	<form method="POST" action="" id="searchsubmit">
 	<select id="select">
 		<option value="selectcafe"> 카페명 </option>
 		<option value="selectlocation"> 장소명 </option>
 	</select>
-	<input id="search" name="_search">
-	<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+		{% csrf_token %}
+		<input id="search" name="_search">
+		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+	</form>
 </div>
 <br>
 <div id="resultbox">
@@ -58,10 +61,11 @@
 
 	function searchcafe() {
 		if(document.getElementById("select").value == "selectcafe") {
-			window.open("/cafelist_cafe");
+			document.getElementById("searchsubmit").action = "/cafelist_cafe/";
+			document.getElementById("searchsubmit").submit();
 		}
 		else if(document.getElementById("select").value == "selectlocation") {
-			window.open("/cafelist_location");
+			document.getElementById("searchsubmit").submit();
 		}
 	}
 

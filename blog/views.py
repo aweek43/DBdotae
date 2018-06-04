@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from .forms import LoginForm
+from .forms import *
+from django.http import HttpResponse
 from .models import *
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=sys;PWD=tibero")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
 cursor = conn.cursor()
 
 
@@ -18,8 +19,7 @@ def login(request):
 		cursor.execute("SELECT USER_ID, USER_NAME, SEX, LOCATION_ID FROM USERTABLE WHERE USER_ID = ?", logined_user.user_id)
 		rows = cursor.fetchone()
 		if  rows == None:
-			print('no')
-			#return Httpresponse('fail')
+			return HttpResponse('fail')
 		else :
 			logined_user.username = rows.USER_NAME
 			logined_user.sex = rows.SEX
@@ -31,10 +31,18 @@ def login(request):
 
 def cafelist_cafe(request):
 	if request.method == "POST":
+		resultcafe = []
 		key = request.POST['_search']
-		sql = "select * from cafe where cafe_name = %" + key + "%;"
-		cursor.execute(sql)
-	return render(request, 'blog/cafelist_cafe.html', {})
+		cursor.execute("select * from cafe where cafe_name like ?", '%'+key+'%')
+		rows = cursor.fetchall()
+		for i in range (len(rows)):
+			temp = []
+			temp.append(rows[i].CAFE_NAME)
+			temp.append(rows[i].CAFE_ADDRESS)
+			resultcafe.append(temp)
+
+	return render(request, 'blog/cafelist_cafe.html', {'resultcafe':resultcafe})
+
 
 def cafelist_location(request):
 	return render(request, 'blog/cafelist_location.html', {})
