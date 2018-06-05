@@ -1,17 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import *
 from django.http import HttpResponse
 from .models import *
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBDOTAE;PWD=tibero")
 cursor = conn.cursor()
 
 
 logined_user = User()
- 
-def post_list(request):
-    return render(request, 'blog/post_list.html', {})
+logined_user.username = "ana"
 
+def post_list(request):
+    return render(request, 'blog/post_list.html', {'logined_user':logined_user})
+
+#def login(request):
+	#return render(request, 'blog/login.html', {})
+ 
 def login(request):
 	if request.method == "POST":
 		form = LoginForm(request.POST)
@@ -25,8 +29,12 @@ def login(request):
 			logined_user.sex = rows.SEX
 			logined_user.location_id = rows.LOCATION_ID
 			print(logined_user.user_id, logined_user.username, logined_user.sex, logined_user.location_id)
-			return render(request, 'blog/post_list.html', {'logined_user':logined_user})
+			return redirect('post_list')
 	return render(request, 'blog/login.html', {})
+
+def logout(request):
+	logined_user.username = "ana"
+	return redirect('post_list')
 
 
 def cafelist_cafe(request):

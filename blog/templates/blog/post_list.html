@@ -7,6 +7,7 @@
 <style>
 
  h1 {
+ 	font-family: cursive;
  	text-align: center;
  	margin: auto;
  	margin-top: 10%;
@@ -32,12 +33,15 @@
 </style>
 
 <body>
-
+	{% if logined_user.username == "ana" %}
+		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+	{% else %}
+		<p style="text-align: right;">{{ logined_user.username }}님<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button></p>
+	{% endif %}
 <h1> Cafe In </h1>
+	
 
-<p>현재 사용자: {{ logined_user.username }}</p>
 
-<button style="float:right; margin-right: 20%;" onclick="login();"> 로그인 </button>
 
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
@@ -80,9 +84,12 @@ function showmenu() {
 }
 
 function login() {
-		location.href = "/login";
+		location.href = "/login/"
 }
 
+function logout() {
+		location.href = "/logout/"
+}
 </script>
 
 
