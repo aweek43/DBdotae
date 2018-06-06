@@ -1,1 +1,37 @@
-location
+<html>
+<head>
+	<title> CafeList - Address </title>
+	<meta charset="utf-8">
+</head>
+
+<body>
+
+	<h1> Cafe List </h1>
+
+	{% if resultcafe %}
+		{% for cafe in resultcafe %}
+		<form method="POST" id="cafeInfoform" action="{% url 'home' %}">
+			{% csrf_token %}
+			<input type="hidden" id="cafeInfo" value={{cafe.0}} name="cafeID">
+			<div>
+				<p>{{cafe.0}}</p>
+				<button onclick="passInfo();"> {{cafe.1}} &nbsp;&nbsp;&nbsp;&nbsp; {{cafe.2}} </button>
+				<br><br>
+			</div>
+		</form>
+		{% endfor %}
+	{% else %}
+		<p> 검색 결과가 없습니다. </p>
+	{% endif %}
+
+
+<script>
+
+	function passInfo() {
+		document.getElementById("cafeInfoform").submit();
+	}
+
+</script>
+
+</body>
+</html>

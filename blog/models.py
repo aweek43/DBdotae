@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone 
+import datetime
  
 
 class User(models.Model):
@@ -14,8 +15,8 @@ class Cafe(models.Model):
     cafe_name =models.TextField()
     cafe_address = models.TextField()
     location_id = models.IntegerField()
-    opentime = models.TextField()
-    closetime = models.TextField()
+    opentime = models.DateTimeField()
+    closetime = models.DateTimeField()
     image_url = models.TextField()
 
 class Location(models.Model):

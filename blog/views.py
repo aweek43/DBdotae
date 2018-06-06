@@ -2,19 +2,37 @@ from django.shortcuts import render, redirect
 from .forms import *
 from django.http import HttpResponse
 from .models import *
+import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBDOTAE;PWD=tibero")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
 cursor = conn.cursor()
-
 
 logined_user = User()
 logined_user.username = "ana"
 
-def post_list(request):
-    return render(request, 'blog/post_list.html', {'logined_user':logined_user})
+cafe = Cafe()
+cafe.cafe_id = "null"
 
-#def login(request):
-	#return render(request, 'blog/login.html', {})
+location = Location()
+location.location_id = 'null'
+
+def post_list(request):
+	if request.method == "POST":
+		cafe.cafe_id = int(request.POST.get('cafeID'))
+		cursor.execute("select * from cafe where cafe_id = ?", cafe.cafe_id)
+		rows = cursor.fetchone()
+		cafe.cafe_name = rows.CAFE_NAME
+		cafe.cafe_address = rows.CAFE_ADDRESS
+		cafe.location_id = int(rows.LOCATION_ID)
+		cafe.opentime = str(rows.OPEN_TIME)
+		cafe.closetime = str(rows.CLOSE_TIME)
+		cafe.image_url = rows.IMAGE_URL
+
+		cursor.execute("select * from location where location_id = ?", cafe.location_id)
+		rows = cursor.fetchone()
+		location.location_id = rows.LOCATION_ID
+		location.address = rows.ADDRESS
+	return render(request, 'blog/post_list.html', {'logined_user':logined_user, "cafe":cafe, "location":location})
  
 def login(request):
 	if request.method == "POST":
@@ -45,12 +63,23 @@ def cafelist_cafe(request):
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			temp = []
+			temp.append(int(rows[i].CAFE_ID))
 			temp.append(rows[i].CAFE_NAME)
 			temp.append(rows[i].CAFE_ADDRESS)
 			resultcafe.append(temp)
-
 	return render(request, 'blog/cafelist_cafe.html', {'resultcafe':resultcafe})
 
 
 def cafelist_location(request):
-	return render(request, 'blog/cafelist_location.html', {})
+	if request.method == "POST":
+		resultcafe = []
+		key = request.POST['_search']
+		cursor.execute("select * from cafe where cafe_address like ?", '%'+key+'%')
+		rows = cursor.fetchall()
+		for i in range (len(rows)):
+			temp = []
+			temp.append(int(rows[i].CAFE_ID))
+			temp.append(rows[i].CAFE_NAME)
+			temp.append(rows[i].CAFE_ADDRESS)
+			resultcafe.append(temp)
+	return render(request, 'blog/cafelist_cafe.html', {'resultcafe':resultcafe})

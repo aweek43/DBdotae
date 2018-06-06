@@ -10,13 +10,28 @@
 
 	{% if resultcafe %}
 		{% for cafe in resultcafe %}
-		<div>
-			<p> {{cafe}} <button type="submit"> 선택 </button> </p>
-		</div>
+		<form method="POST" id="cafeInfoform" action="{% url 'home' %}">
+			{% csrf_token %}
+			<input type="hidden" id="cafeInfo" value={{cafe.0}} name="cafeID">
+			<div>
+				<p>{{cafe.0}}</p>
+				<button onclick="passInfo();"> {{cafe.1}} &nbsp;&nbsp;&nbsp;&nbsp; {{cafe.2}} </button>
+				<br><br>
+			</div>
+		</form>
 		{% endfor %}
 	{% else %}
 		<p> 검색 결과가 없습니다. </p>
 	{% endif %}
+
+
+<script>
+
+	function passInfo() {
+		document.getElementById("cafeInfoform").submit();
+	}
+
+</script>
 
 </body>
 </html>
