@@ -10,7 +10,7 @@
 
 	{% if resultcafe %}
 		{% for cafe in resultcafe %}
-		<form method="POST" id="cafeInfoform" action="{% url 'home' %}">
+		<form method="POST" id="cafeInfoform" action="{% url 'search' %}">
 			{% csrf_token %}
 			<input type="hidden" id="cafeInfo" value={{cafe.0}} name="cafeID">
 			<div>

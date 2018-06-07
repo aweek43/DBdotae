@@ -9,7 +9,7 @@
  	font-family: cursive;
  	text-align: center;
  	margin: auto;
- 	margin-top: 10%;
+ 	margin-top: 5%;
  }
 
 </style>
@@ -17,13 +17,15 @@
 <body>
 
 <h1> Cafe In </h1>
+<br>
 
-<p>	아이디 </p> 
 
 <form method="post" action="">
 	{% csrf_token %}
+	<p style="text-align:center;">	아이디 : 
 	<input name ="user_id" type="text">
 	<input type="submit" value="login" />
+	 </p> 
 </form>
 
 </body>

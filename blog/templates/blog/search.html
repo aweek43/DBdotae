@@ -1,0 +1,114 @@
+<html>
+<head>
+	<title> Cafe In </title>
+	<meta charset="utf-8">
+</head>
+
+<style>
+
+ h1 {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ #searchbox {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ .infobutton {
+ 	width: 300px;
+ 	height: 50px;
+ }
+
+  #resultbox {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+</style>
+
+<body>
+
+	{% if logined_user.username == "null" %}
+		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+	{% else %}
+		<p style="text-align: right;">{{ logined_user.username }}님
+			<button style=" margin-left: 10px;" onclick="mypage();"> 마이페이지 </button>
+			<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button>
+		</p>
+	{% endif %}
+
+<h1> Cafe In </h1>
+<br>
+<div id="searchbox">
+	<form method="POST" action="" id="searchsubmit">
+	<select id="select">
+		<option value="selectcafe"> 카페명 </option>
+		<option value="selectlocation"> 장소명 </option>
+	</select>
+		{% csrf_token %}
+		<input id="search" name="_search">
+		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+	</form>
+</div>
+<br>
+<div id="resultbox">
+	<input type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
+	<input type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴비교">
+</div>
+
+<div id="cafeInfo">
+	{% if cafe.cafe_id != "null" %}
+		<p> 이름: {{cafe.cafe_name}}</p>
+		<br>
+		<p> 주소: {{location.address}}</p>
+		<br>
+		<p> 오픈시간: {{cafe.opentime}}</p>
+		<br>
+		<p> 마감시간: {{cafe.closetime}}</p>
+		<br>
+	{% endif %}
+</div>
+
+
+<script type="text/javascript">
+
+	function searchcafe() {
+		if(document.getElementById("select").value == "selectcafe") {
+			document.getElementById("searchsubmit").action = "/cafelist_cafe/";
+			document.getElementById("searchsubmit").submit();
+		}
+		else if(document.getElementById("select").value == "selectlocation") {
+			document.getElementById("searchsubmit").action = "/cafelist_location/";
+			document.getElementById("searchsubmit").submit();
+		}
+	}
+
+function showcafe() {
+	document.getElementById("infocafe").style.backgroundColor = "lightblue";
+	document.getElementById("infomenu").style.backgroundColor = "buttonface";
+	document.getElementById("cafeInfo").style.display = "inline-block";
+}
+
+function showmenu() {
+	document.getElementById("infomenu").style.backgroundColor = "lightblue";
+	document.getElementById("infocafe").style.backgroundColor = "buttonface";
+	document.getElementById("cafeInfo").style.display = "none";
+}
+
+function login() {
+		location.href = "/login";
+}
+
+function logout() {
+		location.href = "/logout/"
+}
+
+function mypage() {
+		location.href = "/mypage/"
+}
+</script>
+
+</body>
+</html>

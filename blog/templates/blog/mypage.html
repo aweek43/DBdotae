@@ -1,0 +1,95 @@
+<html>
+<head>
+	<title> Cafe In </title>
+	<meta charset="utf-8">
+</head>
+
+<style>
+
+ h1 {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ #searchbox {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ .infobutton {
+ 	width: 300px;
+ 	height: 50px;
+ }
+
+
+</style>
+
+<body>
+
+	{% if logined_user.username == "null" %}
+		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+	{% else %}
+		<p style="text-align: right;">{{ logined_user.username }}님
+			<button style=" margin-left: 10px;" onclick="mypage();"> 마이페이지 </button>
+			<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button>
+		</p>
+	{% endif %}
+
+<h1> Cafe In </h1>
+<br>
+<div id="searchbox">
+	<form method="POST" action="" id="searchsubmit">
+	<select id="select">
+		<option value="selectcafe"> 카페명 </option>
+		<option value="selectlocation"> 장소명 </option>
+	</select>
+		{% csrf_token %}
+		<input id="search" name="_search">
+		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+	</form>
+</div>
+<br>
+<button onclick="revise();"> 수정 </button>
+<div id="myInfo">
+	{% if cafe.cafe_id != "null" %}
+		<p> 이름: {{logined_user.username}}</p>
+		<br>
+		<p> 나이: {{logined_user.age}}</p>
+		<br>
+		<p> 성별: {{logined_user.sex}}</p>
+		<br>
+		<p> location_id: {{logined_user.location_id}}</p>
+		<br>
+	{% endif %}
+</div>
+
+
+<script type="text/javascript">
+
+	function searchcafe() {
+		if(document.getElementById("select").value == "selectcafe") {
+			document.getElementById("searchsubmit").action = "/cafelist_cafe/";
+			document.getElementById("searchsubmit").submit();
+		}
+		else if(document.getElementById("select").value == "selectlocation") {
+			document.getElementById("searchsubmit").action = "/cafelist_location/";
+			document.getElementById("searchsubmit").submit();
+		}
+	}
+
+
+function login() {
+		location.href = "/login";
+}
+
+function logout() {
+		location.href = "/logout/"
+}
+
+function mypage() {
+		location.href = "/mypage/"
+}
+</script>
+
+</body>
+</html>
