@@ -11,6 +11,10 @@
  	margin: auto;
  }
 
+ a:link { color: red; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: blue;}
+
  #searchbox {
  	text-align: center;
  	margin: auto;
@@ -23,6 +27,17 @@
 
   #resultbox {
  	text-align: center;
+ 	margin: auto;
+ }
+
+ #container {
+ 	padding: 10px;
+ 	text-align: center;
+ 	width: 1000px;
+ 	height: 600px;
+ 	border-style: wave;
+ 	border-color: black;
+ 	background-color: gray;
  	margin: auto;
  }
 
@@ -39,7 +54,7 @@
 		</p>
 	{% endif %}
 
-<h1> Cafe In </h1>
+<a href="/"><h1> Cafe In </h1></a>
 <br>
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
@@ -53,22 +68,24 @@
 	</form>
 </div>
 <br>
-<div id="resultbox">
-	<input type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
-	<input type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴비교">
-</div>
+<div id = 'container'>
+	<div id="resultbox">
+		<input type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
+		<input type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴비교">
+	</div>
 
-<div id="cafeInfo">
-	{% if cafe.cafe_id != "null" %}
-		<p> 이름: {{cafe.cafe_name}}</p>
-		<br>
-		<p> 주소: {{location.address}}</p>
-		<br>
-		<p> 오픈시간: {{cafe.opentime}}</p>
-		<br>
-		<p> 마감시간: {{cafe.closetime}}</p>
-		<br>
-	{% endif %}
+	<div id="cafeInfo">
+		{% if cafe.cafe_id != "null" %}
+			<p> 이름: {{cafe.cafe_name}}</p>
+			<br>
+			<p> 주소: {{location.address}}</p>
+			<br>
+			<p> 오픈시간: {{cafe.opentime}}</p>
+			<br>
+			<p> 마감시간: {{cafe.closetime}}</p>
+			<br>
+		{% endif %}
+	</div>
 </div>
 
 

@@ -6,6 +6,10 @@
 
 <style>
 
+ a:link { color: red; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: blue;}
+
  h1 {
  	text-align: center;
  	margin: auto;
@@ -38,7 +42,7 @@
 		</p>
 	{% endif %}
 
-<h1> Cafe In </h1>
+<a href="/"><h1> Cafe In </h1></a>
 
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
@@ -72,6 +76,10 @@ function login() {
 
 function logout() {
 		location.href = "/logout/"
+}
+
+function mypage() {
+		location.href = "/mypage/"
 }
 </script>
 
