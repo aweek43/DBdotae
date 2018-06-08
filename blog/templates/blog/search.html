@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <html>
 <head>
 	<title> Cafe In </title>
@@ -85,6 +86,8 @@
 			<p> 마감시간: {{cafe.closetime}}</p>
 			<br><br>
 			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
+			<br>
+			<img src='{{cafe.image_url}}' alt="image">
 		{% endif %}
 	</div>
 </div>
@@ -138,8 +141,8 @@ function mypage() {
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['시각', '인원수'],
-          ['00',  0],
-          ['',  0],
+          ['00',  {{log_user_num.10}}],
+          ['',  {{log_user_num.11}}],
           ['02',  0],
           ['',  0],
           ['04',  0],
@@ -148,13 +151,13 @@ function mypage() {
           ['',  0],
           ['08',  0],
           ['',  0],
-          ['10',  30],
-          ['',  40],
-          ['12',  30],
-          ['',  30],
-          ['14',  20],
+          ['10',  0],
           ['',  0],
-          ['16',  10],
+          ['12',  0],
+          ['',  0],
+          ['14',  0],
+          ['',  0],
+          ['16',  0],
           ['',  0],
           ['18',  0],
           ['',  0],

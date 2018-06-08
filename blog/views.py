@@ -32,13 +32,28 @@ def search(request):
 		cafe.location_id = int(rows.LOCATION_ID)
 		cafe.opentime = str(rows.OPEN_TIME)
 		cafe.closetime = str(rows.CLOSE_TIME)
-		cafe.image_url = rows.IMAGE_URL
+		cafe.image_url = str(rows.IMAGE_URL)
 
 		cursor.execute("select * from location where location_id = ?", cafe.location_id)
 		rows = cursor.fetchone()
 		location.location_id = rows.LOCATION_ID
 		location.address = rows.ADDRESS
-	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location})
+
+		log_user_num = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		time_count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		log.cafe_id = int(request.POST.get('cafeID'))
+		cursor.execute("select * from log where cafe_id=?", log.cafe_id)
+		rows = cursor.fetchall()
+		for i in range (len(rows)):
+			time = str(rows[i].TIME)
+			num = int(rows[i].USER_NUM)
+			time = time[:2]
+			log_user_num[int(time)] += num
+			time_count[int(time)] += 1
+		for i in range(0,24):
+			if time_count[0] != 0:
+				log_user_num[i] = log_user_num[i] // time_count[i]
+	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num})
 
 def mypage(request):
 	return render(request, 'blog/mypage.html', {'logined_user':logined_user})
@@ -55,7 +70,7 @@ def login(request):
 			logined_user.username = rows.USER_NAME
 			logined_user.sex = rows.SEX
 			logined_user.location_id = rows.LOCATION_ID
-			return redirect('search')
+			return redirect('main')
 	return render(request, 'blog/login.html', {})
 
 def logout(request):
