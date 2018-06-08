@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import *
 import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBDOTAE;PWD=tibero")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
 cursor = conn.cursor()
 
 logined_user = User()
@@ -15,6 +15,10 @@ cafe.cafe_id = "null"
 
 location = Location()
 location.location_id = 'null'
+
+log = Log()
+log.cafe_id = 'null'
+
 def main(request):
 	return render(request, 'blog/main.html', {'logined_user':logined_user})
 

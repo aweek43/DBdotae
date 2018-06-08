@@ -34,7 +34,7 @@
  	padding: 10px;
  	text-align: center;
  	width: 1000px;
- 	height: 600px;
+ 	height: 700px;
  	border-style: wave;
  	border-color: black;
  	background-color: gray;
@@ -83,10 +83,13 @@
 			<p> 오픈시간: {{cafe.opentime}}</p>
 			<br>
 			<p> 마감시간: {{cafe.closetime}}</p>
-			<br>
+			<br><br>
+			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
 		{% endif %}
 	</div>
 </div>
+
+<div id="chart_div"></div>
 
 
 <script type="text/javascript">
@@ -126,6 +129,52 @@ function mypage() {
 		location.href = "/mypage/"
 }
 </script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['시각', '인원수'],
+          ['00',  0],
+          ['',  0],
+          ['02',  0],
+          ['',  0],
+          ['04',  0],
+          ['',  0],
+          ['06',  0],
+          ['',  0],
+          ['08',  0],
+          ['',  0],
+          ['10',  30],
+          ['',  40],
+          ['12',  30],
+          ['',  30],
+          ['14',  20],
+          ['',  0],
+          ['16',  10],
+          ['',  0],
+          ['18',  0],
+          ['',  0],
+          ['20',  0],
+          ['',  0],
+          ['22',  0],
+          ['',  0],
+          ['24',  0]
+        ]);
+
+        var options = {
+          title: '시간대별 인원수',
+          hAxis: {title: '시각',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
+        };
+
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
 
 </body>
 </html>

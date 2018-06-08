@@ -33,3 +33,9 @@ class menu(models.Model):
     menu_name = models.TextField()
     price =models.IntegerField()
     menu_code=models.IntegerField()
+
+class Log(models.Model):
+    cafe_id = models.IntegerField()
+    day = models.DateTimeField()
+    time = models.DateTimeField()
+    user_num = models.IntegerField()
