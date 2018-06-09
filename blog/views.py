@@ -39,8 +39,8 @@ def search(request):
 		location.location_id = rows.LOCATION_ID
 		location.address = rows.ADDRESS
 
-		log_user_num = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-		time_count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		log_user_num = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+		time_count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		log.cafe_id = int(request.POST.get('cafeID'))
 		cursor.execute("select * from log where cafe_id=?", log.cafe_id)
 		rows = cursor.fetchall()
@@ -51,7 +51,7 @@ def search(request):
 			log_user_num[int(time)] += num
 			time_count[int(time)] += 1
 		for i in range(0,24):
-			if time_count[0] != 0:
+			if time_count[i] != 0:
 				log_user_num[i] = log_user_num[i] // time_count[i]
 	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num})
 

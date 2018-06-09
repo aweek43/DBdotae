@@ -87,12 +87,10 @@
 			<br><br>
 			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
 			<br>
-			<img src='{{cafe.image_url}}' alt="image">
+			<img src='{{cafe.image_url}}' alt="image" id="cafeimage" style="width: 700px; height: 300px;">
 		{% endif %}
 	</div>
 </div>
-
-<div id="chart_div"></div>
 
 
 <script type="text/javascript">
@@ -141,31 +139,31 @@ function mypage() {
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['시각', '인원수'],
-          ['00',  {{log_user_num.10}}],
-          ['',  {{log_user_num.11}}],
-          ['02',  0],
-          ['',  0],
-          ['04',  0],
-          ['',  0],
-          ['06',  0],
-          ['',  0],
-          ['08',  0],
-          ['',  0],
-          ['10',  0],
-          ['',  0],
-          ['12',  0],
-          ['',  0],
-          ['14',  0],
-          ['',  0],
-          ['16',  0],
-          ['',  0],
-          ['18',  0],
-          ['',  0],
-          ['20',  0],
-          ['',  0],
-          ['22',  0],
-          ['',  0],
-          ['24',  0]
+          ['00',  {{log_user_num.0}} ],
+          ['',  {{log_user_num.1}} ],
+          ['02',  {{log_user_num.2}} ],
+          ['',  {{log_user_num.3}} ],
+          ['04',  {{log_user_num.4}} ],
+          ['',  {{log_user_num.5}} ],
+          ['06',  {{log_user_num.6}} ],
+          ['',  {{log_user_num.7}} ],
+          ['08',  {{log_user_num.8}} ],
+          ['',  {{log_user_num.9}} ],
+          ['10',  {{log_user_num.10}} ],
+          ['',  {{log_user_num.11}} ],
+          ['12',  {{log_user_num.12}} ],
+          ['',  {{log_user_num.13}} ],
+          ['14',  {{log_user_num.14}} ],
+          ['',  {{log_user_num.15}} ],
+          ['16',  {{log_user_num.16}} ],
+          ['',  {{log_user_num.17}} ],
+          ['18',  {{log_user_num.18}} ],
+          ['',  {{log_user_num.19}} ],
+          ['20',  {{log_user_num.20}} ],
+          ['',  {{log_user_num.21}} ],
+          ['22',  {{log_user_num.22}} ],
+          ['',  {{log_user_num.23}} ],
+          ['24',  {{log_user_num.24}} ]
         ]);
 
         var options = {
