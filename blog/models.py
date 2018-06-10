@@ -10,7 +10,6 @@ class User(models.Model):
     age = models.IntegerField()
     location_id = models.IntegerField()
     favorite = models.TextField()
-    favorite_code = models.IntegerField()
     address = models.TextField()
  
 class Cafe(models.Model):

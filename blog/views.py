@@ -58,6 +58,13 @@ def search(request):
 	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num})
 
 def mypage(request):
+	if request.method == "POST":
+		favorite = request.POST.get('choice')
+		cursor.execute("SELECT * FROM MENUCODE WHERE MENU_NAME = ?", favorite)
+		rows = cursor.fetchone()
+		logined_user.favorite = favorite
+		menuc = rows.MENU_CODE
+		cursor.execute("UPDATE USERTABLE SET FAVORITE = ? where user_id = ?", menuc, logined_user.user_id)		
 	cursor.execute("SELECT * from coupon c1, cafe c2 where c1.user_id = ? and c1.cafe_id = c2.cafe_id", logined_user.user_id)
 	rows = cursor.fetchall()
 	couponlist = []
@@ -86,11 +93,11 @@ def login(request):
 			logined_user.username = rows.USER_NAME
 			logined_user.sex = rows.SEX
 			logined_user.location_id = rows.LOCATION_ID
-			logined_user.favorite_code = rows.FAVORITE
+			favorite_code = rows.FAVORITE
 			cursor.execute("SELECT address FROM LOCATION WHERE location_id = ?", logined_user.location_id)
 			row = cursor.fetchone()
 			logined_user.address = row.ADDRESS
-			cursor.execute("SELECT MENU_NAME FROM MENUCODE WHERE MENU_CODE = ?", logined_user.favorite_code)
+			cursor.execute("SELECT MENU_NAME FROM MENUCODE WHERE MENU_CODE = ?", favorite_code)
 			row = cursor.fetchone()
 			logined_user.favorite = row.MENU_NAME
 			return redirect('main')
@@ -129,3 +136,26 @@ def cafelist_location(request):
 			temp.append(rows[i].CAFE_ADDRESS)
 			resultcafe.append(temp)
 	return render(request, 'blog/cafelist_cafe.html', {'resultcafe':resultcafe})
+
+def  addresslist(request):
+	if request.method == "POST":
+		resultaddress = []
+		key = request.POST['_address']
+		cursor.execute("SELECT * from location where ADDRESS like ?", '%'+key+'%')
+		rows = cursor.fetchall()
+		for i in range (len(rows)):
+			temp = []
+			temp.append(int(rows[i].LOCATION_ID))
+			temp.append(rows[i].ADDRESS)
+			resultaddress.append(temp)
+	return render(request, 'blog/addresslist.html', {'resultaddress':resultaddress})
+
+def  addresschoice(request):
+	if request.method == "POST":
+		key = request.POST.get('addressID')
+		cursor.execute("SELECT * FROM LOCATION WHERE location_id = ?", key)
+		rows = cursor.fetchone()
+		logined_user.location_id = rows.LOCATION_ID
+		logined_user.address = rows.ADDRESS
+		cursor.execute("UPDATE USERTABLE SET LOCATION_ID = ? where user_id = ?",logined_user.location_id , logined_user.user_id)
+	return redirect('mypage')

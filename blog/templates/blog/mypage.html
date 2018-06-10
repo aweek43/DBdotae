@@ -84,25 +84,36 @@ a:link { color: red; text-decoration: none;}
 			<p> 나이: {{logined_user.age}}</p>
 			<br>
 			<p> 성별: {{logined_user.sex}}</p>
-			<br>
-			<div id="revisable">
+			<div id="address_revisable">
+				<br>
 				<p> 주소: {{logined_user.address}}</p>
+				<input type="button" onclick="address_revise();" value="주소 수정하기">
+			</div>
+			<div style="display:none" id= "address_revising">
+				<p> 주소: </p>
+				<form method="post" id="address_form" name = "address_form">
+					{% csrf_token %}
+					<input id="address" name="_address">
+					<button type="submit" id="searchbutton" onclick="searchaddress();"> 검색 </button>
+				</form>
+			</div>
+			<div id="favorite_revisable">
 				<br>
 				<p> 선호 음료: {{logined_user.favorite}}</p>
-				<input type="button" onclick="revise();" value="수정">
+				<input type="button" onclick="favorite_revise();" value="선호음료 수정하기">
 			</div>
-			<div style="display:none" id= "revising">
-				<p> 주소: 주소</p>
+			<div style="display:none" id= "favorite_revising">
 				<br>
 				<form method="post" id="select_form" name = "select_form">
 					{% csrf_token %}
-					<p> 선호 음료: 
+					<p> 선호 음료:</p>
 					{% if favoritelist %}
 					{% for favorite in favoritelist %}
 						<input type="radio" name="choice" id="choice{{ favorite }}" value="{{ favorite }}" />
-    					<label for="choice{{ favorite }}">{{ favorite }}</label><br />
+    					{{ favorite }} 
 					{% endfor %}
-					{% endif %}</p>
+					{% endif %}
+						<br><br>
 					  <input type = "submit" value = "수정완료" onclick = "complete()">
 				</form> 
 			</div>
@@ -136,13 +147,23 @@ a:link { color: red; text-decoration: none;}
 		}
 	}
 
-function revise() {
-	document.getElementById("revising").style.display = "inline-block";
-	document.getElementById("revisable").style.display = "none";
+	function searchaddress() {
+			document.getElementById("address_form").action = "/addresslist/";
+			document.getElementById("address_form").submit();
+		}
+
+function favorite_revise() {
+	document.getElementById("favorite_revising").style.display = "inline-block";
+	document.getElementById("favorite_revisable").style.display = "none";
+}
+function address_revise() {
+	document.getElementById("address_revising").style.display = "inline-block";
+	document.getElementById("address_revisable").style.display = "none";
 }
 
 function complete() {
 		location.href = "/mypage";
+		document.getElementById("select_form").submit();
 }
 
 function login() {

@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title> CafeList - 주소수정하기</title>
+	<meta charset="utf-8">
+</head>
+
+<body>
+
+	<h1> address List </h1>
+
+	{% if resultaddress %}
+		{% for address in resultaddress %}
+		<form method="post" id="addressInfoform" action="{% url 'addresschoice' %}">
+			{% csrf_token %}
+			<input type="hidden" id="addressInfo" value={{address.0}} name="addressID">
+			<div>
+				<button onclick="passInfo();"> {{address.1}} </button>
+				<br><br>
+			</div>
+		</form>
+		{% endfor %}
+	{% else %}
+		<p> 검색 결과가 없습니다. </p>
+	{% endif %}
+
+<script>
+
+	function passInfo() {
+		document.getElementById("addressInfoform").submit();
+	}
+
+</script>
+
+</body>
+</html>
