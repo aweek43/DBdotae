@@ -9,6 +9,9 @@ class User(models.Model):
     sex = models.TextField()
     age = models.IntegerField()
     location_id = models.IntegerField()
+    favorite = models.TextField()
+    favorite_code = models.IntegerField()
+    address = models.TextField()
  
 class Cafe(models.Model):
     cafe_id =models.IntegerField()
@@ -25,7 +28,7 @@ class Location(models.Model):
 
 class Coupon(models.Model):
     user_id =models.IntegerField()
-    cafe_id =models.IntegerField()
+    cafe_name =models.TextField()
     count =models.IntegerField()
 
 class menu(models.Model):

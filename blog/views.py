@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import *
 from django.http import HttpResponse
 from .models import *
@@ -18,6 +18,8 @@ location.location_id = 'null'
 
 log = Log()
 log.cafe_id = 'null'
+
+coupon = Coupon()
 
 def main(request):
 	return render(request, 'blog/main.html', {'logined_user':logined_user})
@@ -42,7 +44,7 @@ def search(request):
 		log_user_num = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		time_count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		log.cafe_id = int(request.POST.get('cafeID'))
-		cursor.execute("select * from log where cafe_id=?", log.cafe_id)
+		cursor.execute("select * from LOGTABLE where cafe_id=?", log.cafe_id)
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			time = str(rows[i].TIME)
@@ -56,7 +58,21 @@ def search(request):
 	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num})
 
 def mypage(request):
-	return render(request, 'blog/mypage.html', {'logined_user':logined_user})
+	cursor.execute("SELECT * from coupon c1, cafe c2 where c1.user_id = ? and c1.cafe_id = c2.cafe_id", logined_user.user_id)
+	rows = cursor.fetchall()
+	couponlist = []
+	for i in range (len(rows)):
+			temp = Coupon()
+			temp.user_id = rows[i].USER_ID
+			temp.cafe_name = rows[i].CAFE_NAME
+			temp.count = int(rows[i].COUNT)
+			couponlist.append(temp)
+	cursor.execute("select * from MENUCODE")
+	rows = cursor.fetchall()
+	favoritelist = []
+	for i in range (len(rows)):
+		favoritelist.append(rows[i].MENU_NAME)
+	return render(request, 'blog/mypage.html', {'logined_user':logined_user, 'couponlist':couponlist, 'favoritelist':favoritelist})
 
 def login(request):
 	if request.method == "POST":
@@ -70,6 +86,13 @@ def login(request):
 			logined_user.username = rows.USER_NAME
 			logined_user.sex = rows.SEX
 			logined_user.location_id = rows.LOCATION_ID
+			logined_user.favorite_code = rows.FAVORITE
+			cursor.execute("SELECT address FROM LOCATION WHERE location_id = ?", logined_user.location_id)
+			row = cursor.fetchone()
+			logined_user.address = row.ADDRESS
+			cursor.execute("SELECT MENU_NAME FROM MENUCODE WHERE MENU_CODE = ?", logined_user.favorite_code)
+			row = cursor.fetchone()
+			logined_user.favorite = row.MENU_NAME
 			return redirect('main')
 	return render(request, 'blog/login.html', {})
 

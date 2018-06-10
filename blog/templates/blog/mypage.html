@@ -71,25 +71,52 @@ a:link { color: red; text-decoration: none;}
 	</form>
 </div>
 <br>
-<div id = 'container'>
+<div id = "container">
 	<div id="resultbox">
 		<input type="button" id="infouser" class="infobutton" onclick="showmyInfo();" value="내 정보">
 		<input type="button" id="infocoupon" class="infobutton" onclick="showcouponInfo();" value="쿠폰정보">
 	</div>
 
 	<div id="myInfo">
-			<button onclick="revise();"> 수정 </button>
+			
 			<p> 이름: {{logined_user.username}}</p>
 			<br>
 			<p> 나이: {{logined_user.age}}</p>
 			<br>
 			<p> 성별: {{logined_user.sex}}</p>
 			<br>
-			<p> location_id: {{logined_user.location_id}}</p>
-			<br>
+			<div id="revisable">
+				<p> 주소: {{logined_user.address}}</p>
+				<br>
+				<p> 선호 음료: {{logined_user.favorite}}</p>
+				<input type="button" onclick="revise();" value="수정">
+			</div>
+			<div style="display:none" id= "revising">
+				<p> 주소: 주소</p>
+				<br>
+				<form method="post" id="select_form" name = "select_form">
+					{% csrf_token %}
+					<p> 선호 음료: 
+					{% if favoritelist %}
+					{% for favorite in favoritelist %}
+						<input type="radio" name="choice" id="choice{{ favorite }}" value="{{ favorite }}" />
+    					<label for="choice{{ favorite }}">{{ favorite }}</label><br />
+					{% endfor %}
+					{% endif %}</p>
+					  <input type = "submit" value = "수정완료" onclick = "complete()">
+				</form> 
+			</div>
+
 	</div>
+
 	<div id="couponInfo">
-			<p> 쿠폰</p>
+			{% if couponlist %}
+				{% for coupon in couponlist %}
+				<p>{{ coupon.cafe_name }} {{coupon.count}} / 10</p>
+				{% endfor %}
+			{% else %}
+				<p> 쿠폰이 없네요! 모아봅시다. </p>
+			{% endif %}
 			<br>
 	</div>
 </div>
@@ -109,6 +136,14 @@ a:link { color: red; text-decoration: none;}
 		}
 	}
 
+function revise() {
+	document.getElementById("revising").style.display = "inline-block";
+	document.getElementById("revisable").style.display = "none";
+}
+
+function complete() {
+		location.href = "/mypage";
+}
 
 function login() {
 		location.href = "/login";

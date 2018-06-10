@@ -77,6 +77,9 @@
 
 	<div id="cafeInfo">
 		{% if cafe.cafe_id != "null" %}
+			<br>
+			<img src='{{cafe.image_url}}' alt="image" id="cafeimage" style="width: 700px; height: 300px;">
+			<br><br>
 			<p> 이름: {{cafe.cafe_name}}</p>
 			<br>
 			<p> 주소: {{location.address}}</p>
@@ -86,8 +89,6 @@
 			<p> 마감시간: {{cafe.closetime}}</p>
 			<br><br>
 			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
-			<br>
-			<img src='{{cafe.image_url}}' alt="image" id="cafeimage" style="width: 700px; height: 300px;">
 		{% endif %}
 	</div>
 </div>
