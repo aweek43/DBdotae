@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import *
 import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=tibero")
 cursor = conn.cursor()
 
 logined_user = User()
@@ -55,7 +55,44 @@ def search(request):
 		for i in range(0,24):
 			if time_count[i] != 0:
 				log_user_num[i] = log_user_num[i] // time_count[i]
-	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num})
+
+		menu_list = []
+		cursor.execute("select to_char(sysdate,'hh24') from dual")
+		current = cursor.fetchone()
+		c_current = int(current[0])
+		current = str(current[0])
+		current += ":00:00"
+
+		cursor.execute("select * from menu where cafe_id = ?", cafe.cafe_id)
+		rows = cursor.fetchall()
+		for i in range (len(rows)):
+			temp = []
+			cursor.execute("select menu_url from menucode where menu_code = ?", rows[i].MENU_CODE)
+			rows_1 = cursor.fetchone()
+			temp.append(rows[i].MENU_NAME)
+			temp.append(rows[i].PRICE)
+			temp.append(rows_1.MENU_URL)
+			menu_list.append(temp)
+
+		time_result = []
+		cursor.execute("select * from cafe where cafe_id = ANY (select * from (select cafe_id  from (select * from logtable where cafe_id = ANY (select cafe_id from cafe where location_id = ? )) where time = ? having avg(user_num) < ? group by cafe_id order by avg(user_num)) where rownum <= 2);", cafe.location_id, current, log_user_num[c_current])
+		rows = cursor.fetchall()
+		for i in range(len(rows)):
+			temp = []
+			temp.append(rows[i].CAFE_NAME)
+			temp.append(rows[i].CAFE_ADDRESS)
+			time_result.append(temp)
+
+		price_result = []
+		cursor.execute("select * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ( select favorite from usertable where user_id = ? ) order by price ) where rownum <= 2);", cafe.location_id, cafe.cafe_id, logined_user.user_id)
+		rows = cursor.fetchall()
+		for i in range(len(rows)):
+			temp = []
+			temp.append(rows[i].CAFE_NAME)
+			temp.append(rows[i].CAFE_ADDRESS)
+			price_result.append(temp)
+
+	return render(request, 'blog/search.html', {'logined_user':logined_user, "cafe":cafe, "location":location, "log_user_num":log_user_num, "menu_list":menu_list, "time_result":time_result, "price_result":price_result})
 
 def mypage(request):
 	if request.method == "POST":

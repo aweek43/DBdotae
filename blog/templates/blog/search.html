@@ -42,6 +42,28 @@
  	margin: auto;
  }
 
+  div.gallery {
+    margin: 10px;
+    border: 1px solid #ccc;
+    float: left;
+    width: 180px;
+}
+
+div.gallery:hover {
+    border: 1px solid #777;
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
+}
+
+
 </style>
 
 <body>
@@ -91,6 +113,31 @@
 			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
 		{% endif %}
 	</div>
+
+	<div id = "menulist" style ="display:none">
+	{% if menu_list %}
+		<p>	메뉴목록 </p>
+			{% for menu in menu_list %}
+				<div class="gallery">
+				<img src ='{{menu.2}}' alt="image" id="cafeimage" style="width: 200px; height: 200px;">
+			 	</div>
+			{%endfor%}
+
+			{% for time_recom in time_result %}
+				<p> 이 시각, 더 한가한 카페 목록 </p>
+				<p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>
+			{% endfor %}
+			<br><br>
+			{% for price_recom in price_result %}
+				<p> 나의 음료가 더 싼 카페 목록 </p>
+				<p> {{price_recom.0}} &nbsp;&nbsp;&nbsp; {{price_recom.1}} </p>
+			{% endfor %}
+
+	{% else %}
+		<p>	카페를 선택해 주세요. </p>
+	{% endif %}
+	</div>
+
 </div>
 
 
@@ -111,12 +158,16 @@ function showcafe() {
 	document.getElementById("infocafe").style.backgroundColor = "lightblue";
 	document.getElementById("infomenu").style.backgroundColor = "buttonface";
 	document.getElementById("cafeInfo").style.display = "inline-block";
+	document.getElementById("menulist").style.display = "none";
+
 }
 
 function showmenu() {
 	document.getElementById("infomenu").style.backgroundColor = "lightblue";
 	document.getElementById("infocafe").style.backgroundColor = "buttonface";
 	document.getElementById("cafeInfo").style.display = "none";
+	document.getElementById("menulist").style.display = "inline-block";
+
 }
 
 function login() {
