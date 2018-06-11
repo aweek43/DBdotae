@@ -1,0 +1,15 @@
+<html>
+<head>
+	<title> CafeList - Price-Recommendation </title>
+	<meta charset="utf-8">
+</head>
+
+<body>
+
+	{% if price_result %}
+		{% for cafe in price_result %}
+				{{cafe.0}} {{cafe.1}} <br>
+		{% endfor %}
+	{% endif %}
+</body>
+</html>

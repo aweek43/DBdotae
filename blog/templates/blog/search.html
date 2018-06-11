@@ -63,6 +63,10 @@ div.desc {
     text-align: center;
 }
 
+#iframe {
+	display: none;
+}
+
 
 </style>
 
@@ -104,7 +108,7 @@ div.desc {
 			<br><br>
 			<p> 이름: {{cafe.cafe_name}}</p>
 			<br>
-			<p> 주소: {{location.address}}</p>
+			<p> 주소: {{cafe.cafe_address}}</p>
 			<br>
 			<p> 오픈시간: {{cafe.opentime}}</p>
 			<br>
@@ -119,25 +123,33 @@ div.desc {
 		<p>	메뉴목록 </p>
 			{% for menu in menu_list %}
 			<div class="gallery" style="width: 200px; height: 250px;">
-				<img src ='{{menu.2}}' alt="image" id="cafeimage" style="width: 200px; height: 200px;">
+				<img src ='{{menu.2}}' onclick="price_recom({{menu.3}})" alt="{{menu.3}}" id="cafeimage" style="width: 200px; height: 200px;">
 				{{menu.0}}<br>{{menu.1}}원
 			</div>
 			{%endfor%}
-		
+			<p> 이 시각, 더 한가한 카페 목록 </p>
 			{% for time_recom in time_result %}
-				<p> 이 시각, 더 한가한 카페 목록 </p>
 				<p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>
 			{% endfor %}
 			<br><br>
+			<div id="priceMy">
+			<p> 나의 음료가 더 싼 카페 목록 </p>
 			{% for price_recom in price_result %}
-				<p> 나의 음료가 더 싼 카페 목록 </p>
 				<p> {{price_recom.0}} &nbsp;&nbsp;&nbsp; {{price_recom.1}} </p>
 			{% endfor %}
+			</div>
 
 	{% else %}
 		<p>	카페를 선택해 주세요. </p>
 	{% endif %}
 	</div>
+
+	<form name="image_price_name" id = "image_price" method="POST" action = "{% url 'price_choice' %}">
+		{% csrf_token %}
+		<input type="hidden" id="image_code" name="image_code_name" value="none">
+	</form>
+
+	<iframe id="iframe" src="{% url 'price_choice' %}" name ="iframe"></iframe>
 
 </div>
 
@@ -182,6 +194,17 @@ function logout() {
 function mypage() {
 		location.href = "/mypage/"
 }
+
+function price_recom(key) {
+	document.getElementById("image_code").value = key;
+	form = document.image_price_name;
+	form.target = "iframe";
+	form.submit();
+	document.getElementById("iframe").style.display = "inline-block";
+	document.getElementById("priceMy").style.display = "none";
+}
+
+
 </script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

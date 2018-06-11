@@ -21,11 +21,18 @@ log.cafe_id = 'null'
 
 coupon = Coupon()
 
+log_user_num = []
+menu_list = []
+time_result = []
+price_result = []
+
 def main(request):
 	return render(request, 'blog/main.html', {'logined_user':logined_user})
 
 def search(request):
 	if request.method == "POST":
+		clickmenu = request.POST.get('image_code_name')
+
 		cafe.cafe_id = int(request.POST.get('cafeID'))
 		cursor.execute("SELECT * from cafe where cafe_id = ?", cafe.cafe_id)
 		rows = cursor.fetchone()
@@ -56,24 +63,24 @@ def search(request):
 			if time_count[i] != 0:
 				log_user_num[i] = log_user_num[i] // time_count[i]
 
-		menu_list = []
 		cursor.execute("SELECT to_char(sysdate,'hh24') from dual")
 		current = cursor.fetchone()
 		c_current = int(current[0])
 		current = str(current[0])
 		current += ":00:00"
 
+		menu_list = []
 		cursor.execute("SELECT * from menu where cafe_id = ?", cafe.cafe_id)
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			temp = []
-			cursor.execute("SELECT menu_url from menucode where menu_code = ?", rows[i].MENU_CODE)
+			cursor.execute("SELECT * from menucode where menu_code = ?", rows[i].MENU_CODE)
 			rows_1 = cursor.fetchone()
 			temp.append(rows[i].MENU_NAME)
 			temp.append(int(rows[i].PRICE))
 			temp.append(rows_1.MENU_URL)
+			temp.append(int(rows_1.MENU_CODE))
 			menu_list.append(temp)
-
 
 		time_result = []
 		cursor.execute("SELECT * from cafe where cafe_id = ANY (select * from (select cafe_id  from (select * from logtable where cafe_id = ANY (select cafe_id from cafe where location_id = ? )) where time = ? having avg(user_num) < ? group by cafe_id order by avg(user_num)) where rownum <= 2);", cafe.location_id, current, log_user_num[c_current])
@@ -199,3 +206,19 @@ def  addresschoice(request):
 		logined_user.address = rows.ADDRESS
 		cursor.execute("UPDATE USERTABLE SET LOCATION_ID = ? where user_id = ?",logined_user.location_id , logined_user.user_id)
 	return redirect('mypage')
+
+def price_choice(request):
+	price_result = []
+	if request.method == "POST":
+		clickmenu = request.POST.get('image_code_name')
+		price_result = []
+		cursor.execute("SELECT * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ? order by price ) where rownum <= 1000);", cafe.location_id, cafe.cafe_id, clickmenu)
+		rows = cursor.fetchall()
+		for i in range(len(rows)):
+			if i == 2:
+				break
+			temp = []
+			temp.append(rows[i].CAFE_NAME)
+			temp.append(rows[i].CAFE_ADDRESS)
+			price_result.append(temp)
+	return render(request, 'blog/price_choice.html', {"price_result":price_result})
