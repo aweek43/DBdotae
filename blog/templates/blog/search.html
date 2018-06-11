@@ -118,11 +118,12 @@ div.desc {
 	{% if menu_list %}
 		<p>	메뉴목록 </p>
 			{% for menu in menu_list %}
-				<div class="gallery">
+			<div class="gallery" style="width: 200px; height: 250px;">
 				<img src ='{{menu.2}}' alt="image" id="cafeimage" style="width: 200px; height: 200px;">
-			 	</div>
+				{{menu.0}}<br>{{menu.1}}원
+			</div>
 			{%endfor%}
-
+		
 			{% for time_recom in time_result %}
 				<p> 이 시각, 더 한가한 카페 목록 </p>
 				<p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>

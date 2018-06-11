@@ -27,7 +27,7 @@ def main(request):
 def search(request):
 	if request.method == "POST":
 		cafe.cafe_id = int(request.POST.get('cafeID'))
-		cursor.execute("select * from cafe where cafe_id = ?", cafe.cafe_id)
+		cursor.execute("SELECT * from cafe where cafe_id = ?", cafe.cafe_id)
 		rows = cursor.fetchone()
 		cafe.cafe_name = rows.CAFE_NAME
 		cafe.cafe_address = rows.CAFE_ADDRESS
@@ -36,7 +36,7 @@ def search(request):
 		cafe.closetime = str(rows.CLOSE_TIME)
 		cafe.image_url = str(rows.IMAGE_URL)
 
-		cursor.execute("select * from location where location_id = ?", cafe.location_id)
+		cursor.execute("SELECT * from location where location_id = ?", cafe.location_id)
 		rows = cursor.fetchone()
 		location.location_id = rows.LOCATION_ID
 		location.address = rows.ADDRESS
@@ -44,7 +44,7 @@ def search(request):
 		log_user_num = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		time_count = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		log.cafe_id = int(request.POST.get('cafeID'))
-		cursor.execute("select * from LOGTABLE where cafe_id=?", log.cafe_id)
+		cursor.execute("SELECT * from LOGTABLE where cafe_id=?", log.cafe_id)
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			time = str(rows[i].TIME)
@@ -57,25 +57,26 @@ def search(request):
 				log_user_num[i] = log_user_num[i] // time_count[i]
 
 		menu_list = []
-		cursor.execute("select to_char(sysdate,'hh24') from dual")
+		cursor.execute("SELECT to_char(sysdate,'hh24') from dual")
 		current = cursor.fetchone()
 		c_current = int(current[0])
 		current = str(current[0])
 		current += ":00:00"
 
-		cursor.execute("select * from menu where cafe_id = ?", cafe.cafe_id)
+		cursor.execute("SELECT * from menu where cafe_id = ?", cafe.cafe_id)
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			temp = []
-			cursor.execute("select menu_url from menucode where menu_code = ?", rows[i].MENU_CODE)
+			cursor.execute("SELECT menu_url from menucode where menu_code = ?", rows[i].MENU_CODE)
 			rows_1 = cursor.fetchone()
 			temp.append(rows[i].MENU_NAME)
-			temp.append(rows[i].PRICE)
+			temp.append(int(rows[i].PRICE))
 			temp.append(rows_1.MENU_URL)
 			menu_list.append(temp)
 
+
 		time_result = []
-		cursor.execute("select * from cafe where cafe_id = ANY (select * from (select cafe_id  from (select * from logtable where cafe_id = ANY (select cafe_id from cafe where location_id = ? )) where time = ? having avg(user_num) < ? group by cafe_id order by avg(user_num)) where rownum <= 2);", cafe.location_id, current, log_user_num[c_current])
+		cursor.execute("SELECT * from cafe where cafe_id = ANY (select * from (select cafe_id  from (select * from logtable where cafe_id = ANY (select cafe_id from cafe where location_id = ? )) where time = ? having avg(user_num) < ? group by cafe_id order by avg(user_num)) where rownum <= 2);", cafe.location_id, current, log_user_num[c_current])
 		rows = cursor.fetchall()
 		for i in range(len(rows)):
 			temp = []
@@ -84,9 +85,11 @@ def search(request):
 			time_result.append(temp)
 
 		price_result = []
-		cursor.execute("select * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ( select favorite from usertable where user_id = ? ) order by price ) where rownum <= 2);", cafe.location_id, cafe.cafe_id, logined_user.user_id)
+		cursor.execute("SELECT * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ( select favorite from usertable where user_id = ? ) order by price ) where rownum <= 1000);", cafe.location_id, cafe.cafe_id, logined_user.user_id)
 		rows = cursor.fetchall()
 		for i in range(len(rows)):
+			if i == 2:
+				break
 			temp = []
 			temp.append(rows[i].CAFE_NAME)
 			temp.append(rows[i].CAFE_ADDRESS)
@@ -111,7 +114,7 @@ def mypage(request):
 			temp.cafe_name = rows[i].CAFE_NAME
 			temp.count = int(rows[i].COUNT)
 			couponlist.append(temp)
-	cursor.execute("select * from MENUCODE")
+	cursor.execute("SELECT * from MENUCODE")
 	rows = cursor.fetchall()
 	favoritelist = []
 	for i in range (len(rows)):
@@ -149,7 +152,7 @@ def cafelist_cafe(request):
 	if request.method == "POST":
 		resultcafe = []
 		key = request.POST['_search']
-		cursor.execute("select * from cafe where cafe_name like ?", '%'+key+'%')
+		cursor.execute("SELECT * from cafe where cafe_name like ?", '%'+key+'%')
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			temp = []
@@ -164,7 +167,7 @@ def cafelist_location(request):
 	if request.method == "POST":
 		resultcafe = []
 		key = request.POST['_search']
-		cursor.execute("select * from cafe where cafe_address like ?", '%'+key+'%')
+		cursor.execute("SELECT * from cafe where cafe_address like ?", '%'+key+'%')
 		rows = cursor.fetchall()
 		for i in range (len(rows)):
 			temp = []
@@ -172,7 +175,7 @@ def cafelist_location(request):
 			temp.append(rows[i].CAFE_NAME)
 			temp.append(rows[i].CAFE_ADDRESS)
 			resultcafe.append(temp)
-	return render(request, 'blog/cafelist_cafe.html', {'resultcafe':resultcafe})
+	return render(request, 'blog/cafelist_location.html', {'resultcafe':resultcafe})
 
 def  addresslist(request):
 	if request.method == "POST":
