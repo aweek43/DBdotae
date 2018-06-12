@@ -67,13 +67,10 @@
 
 	<div id="cafeInfo">
 		{% if cafe.cafe_id != "null" %}
-			<br>
-			매장 내부
-			<br>
-			<center><img src='{{cafe.image_url}}' alt="image" id="cafeimage" width = 40% height = "30%"></center>
-			<br><br>
 			<center>
-			<div class="ui list">
+			<div style= "float:left; margin-left:130px; border: solid; border-color: orange; padding: 3px;"><img src='{{cafe.image_url}}' alt="image" id="cafeimage" width = "380px" height = "200px"></div>
+			
+			<div class="ui list" style= "float:left; margin-left:30px">
   					<div class="item">
     					<img class="ui avatar image" src="/static/images/cafename.png">
     						<div class="content">
@@ -109,7 +106,7 @@
 		</center>
 
 			<br><br>
-			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
+			<div id="chart_div" style="width: 700px; height: 300px; margin-right:150px; float:right"></div>
 		{% endif %}
 	</div>
 
@@ -117,32 +114,43 @@
    {% if menu_list %}
       <center><font face = size="3" color="black"><b>메뉴목록</b></font></center>
          {% for menu in menu_list %}
-         <div class="gallery" style="width: 150px; height: 150px;">
-            <center><img class="ui medium  image" src ='{{menu.2}}' onclick="price_recom({{menu.3}})" alt="{{menu.3}}" id="cafeimage" style="width: 100px; height: 100px;"></center>
+         <div style="float: left">
+         <div class="gallery" style="width: 120px; height: 120px;">
+            <center><img class="ui medium  image" src ='{{menu.2}}' onclick="price_recom({{menu.3}})" alt="{{menu.3}}" id="cafeimage" style="width: 70px; height: 70px;"></center>
             <font size="2" color="black">{{menu.0}}<br>{{menu.1}}원</font>
-         </div>
+         
+     </div>
+     	</div>
          {%endfor%}
+      	<div style = "float: right; border:solid; border-color:orange">
          <p> 이 시각, 더 한가한 카페 목록 </p>
          {% for time_recom in time_result %}
             <p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>
+        
+
          {% endfor %}
-         <br><br>
+    
          <p> 나의 음료가 더 싼 카페 목록 </p>
          {% for price_recom in price_result %}
             <p> {{price_recom.0}} &nbsp;&nbsp;&nbsp; {{price_recom.1}} </p>
+       
          {% endfor %}
-
+     </div>
+     
    {% else %}
       <p>   카페를 선택해 주세요. </p>
    {% endif %}
+   <div style = "float:right; border:solid; border-color:orange" >
+   <form name="image_price_name" id = "image_price" method="POST" action = "{% url 'price_choice' %}">
+      {% csrf_token %}
+      <input type="hidden" id="image_code" name="image_code_name" value="none">
+   </form>
+
+   <iframe id="iframe" src="{% url 'price_choice' %}" name ="iframe"></iframe>
+</div>
    </div>
 
-   <form name="image_price_name" id = "image_price" method="POST" action = "{% url 'price_choice' %}">
-		{% csrf_token %}
-		<input type="hidden" id="image_code" name="image_code_name" value="none">
-	</form>
-
-	<iframe id="iframe" src="{% url 'price_choice' %}" name ="iframe"></iframe>
+   
 </div>
 
 

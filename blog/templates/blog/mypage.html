@@ -130,18 +130,38 @@
 			</div>
 				</div>
 			</center>
-
+	</div>		
 	<div id="couponInfo">
 			{% if couponlist %}
-				{% for coupon in couponlist %}
-				<p>{{ coupon.cafe_name }} {{coupon.count}} / 10</p>
-				{% endfor %}
+				<table style="margin-top: 7px" class="ui celled striped collapsing table">
+     <thead>
+       <tr>
+           <th>카페명</th>
+            <th >쿠폰 수</th>
+     </tr></thead>
+     <tbody>
+        {% for coupon in couponlist %}
+         <tr>
+            <td class="collapsing">
+               {{ coupon.cafe_name }}
+            </td>
+            <td class="center aligned">
+            	{{coupon.count}}
+            </td>
+           
+          </tr>
+       {% endfor %} 
+   </table>
 			{% else %}
 				<p> 쿠폰이 없네요! 모아봅시다. </p>
 			{% endif %}
 			<br>
 	</div>
+</center>
 </div>
+
+
+
 
 
 

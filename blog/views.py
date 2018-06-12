@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import *
 import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=tibero")
 cursor = conn.cursor()
 
 logined_user = User()
@@ -112,6 +112,7 @@ def mypage(request):
 		logined_user.favorite = favorite
 		menuc = rows.MENU_CODE
 		cursor.execute("UPDATE USERTABLE SET FAVORITE = ? where user_id = ?", menuc, logined_user.user_id)		
+		cursor.commit()	
 	cursor.execute("SELECT * from coupon c1, cafe c2 where c1.user_id = ? and c1.cafe_id = c2.cafe_id", logined_user.user_id)
 	rows = cursor.fetchall()
 	couponlist = []
@@ -139,6 +140,7 @@ def login(request):
 		else :
 			logined_user.username = rows.USER_NAME
 			logined_user.sex = rows.SEX
+			logined_user.age = int(rows.AGE)
 			logined_user.location_id = rows.LOCATION_ID
 			favorite_code = rows.FAVORITE
 			cursor.execute("SELECT address FROM LOCATION WHERE location_id = ?", logined_user.location_id)
@@ -205,6 +207,7 @@ def  addresschoice(request):
 		logined_user.location_id = rows.LOCATION_ID
 		logined_user.address = rows.ADDRESS
 		cursor.execute("UPDATE USERTABLE SET LOCATION_ID = ? where user_id = ?",logined_user.location_id , logined_user.user_id)
+		cursor.commit()
 	return redirect('mypage')
 
 def price_choice(request):
