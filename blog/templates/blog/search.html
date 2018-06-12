@@ -3,154 +3,146 @@
 <head>
 	<title> Cafe In </title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
+	<link rel="stylesheet" type="text/css" href="/static/search.css">
 </head>
 
-<style>
 
- h1 {
- 	text-align: center;
- 	margin: auto;
- }
-
- a:link { color: red; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: blue;}
-
- #searchbox {
- 	text-align: center;
- 	margin: auto;
- }
-
- .infobutton {
- 	width: 300px;
- 	height: 50px;
- }
-
-  #resultbox {
- 	text-align: center;
- 	margin: auto;
- }
-
- #container {
- 	padding: 10px;
- 	text-align: center;
- 	width: 1000px;
- 	height: 700px;
- 	border-style: wave;
- 	border-color: black;
- 	background-color: gray;
- 	margin: auto;
- }
-
-  div.gallery {
-    margin: 10px;
-    border: 1px solid #ccc;
-    float: left;
-    width: 180px;
-}
-
-div.gallery:hover {
-    border: 1px solid #777;
-}
-
-div.gallery img {
-    width: 100%;
-    height: auto;
-}
-
-div.desc {
-    padding: 15px;
-    text-align: center;
-}
-
-#iframe {
-	display: none;
-}
-
-
-</style>
 
 <body>
+<script
+  src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
 
+
+
+<br>
 	{% if logined_user.username == "null" %}
-		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+		<p style="text-align: right;"><button class = "ui tiny orange button" onclick="login();"> 로그인 </button></p>
 	{% else %}
-		<p style="text-align: right;">{{ logined_user.username }}님
-			<button style=" margin-left: 10px;" onclick="mypage();"> 마이페이지 </button>
-			<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button>
-		</p>
+		<div style="text-align: right;" >
+			<p class="ui orange basic image label"><img src="/static/images/person.png">{{ logined_user.username }}님</p>
+			<button class = "ui tiny orange basic button" onclick="mypage();"> 마이페이지 </button>
+			<button class = "ui tiny orange basic button" onclick="logout();"> 로그아웃 </button>
+		</div>
 	{% endif %}
 
-<a href="/"><h1> Cafe In </h1></a>
+
+
+
+ <a href="/">
+ 	<center><img src="/static/images/cafeinlogo.png" height = "17%" width = "30%"></center>
+ </a>
+
+
 <br>
+
+<center>
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
-	<select id="select">
+	
+		{% csrf_token %}
+		<div class="ui action input"><input id="search" name="_search" >
+		<select id="select" class="ui compact selection dropdown">
 		<option value="selectcafe"> 카페명 </option>
 		<option value="selectlocation"> 장소명 </option>
 	</select>
-		{% csrf_token %}
-		<input id="search" name="_search">
-		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+		<button type="submit" class="ui orange button" id="searchbutton" onclick="searchcafe();"> 검색 </button></div>
 	</form>
 </div>
+</center>
+
 <br>
 <div id = 'container'>
 	<div id="resultbox">
-		<input type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
-		<input type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴비교">
+		<input class = "ui tiny orange basic button" type="button" id="infocafe" class="infobutton" onclick="showcafe();" value="카페정보">
+		<input class = "ui tiny orange basic button" type="button" id="infomenu" class="infobutton" onclick="showmenu();" value="메뉴비교">
+	</div>
+	
+	<div class = "ui orange divider">
 	</div>
 
 	<div id="cafeInfo">
 		{% if cafe.cafe_id != "null" %}
 			<br>
-			<img src='{{cafe.image_url}}' alt="image" id="cafeimage" style="width: 700px; height: 300px;">
+			매장 내부
+			<br>
+			<center><img src='{{cafe.image_url}}' alt="image" id="cafeimage" width = 40% height = "30%"></center>
 			<br><br>
-			<p> 이름: {{cafe.cafe_name}}</p>
-			<br>
-			<p> 주소: {{cafe.cafe_address}}</p>
-			<br>
-			<p> 오픈시간: {{cafe.opentime}}</p>
-			<br>
-			<p> 마감시간: {{cafe.closetime}}</p>
+			<center>
+			<div class="ui list">
+  					<div class="item">
+    					<img class="ui avatar image" src="/static/images/cafename.png">
+    						<div class="content">
+      							<font size="2" color="black">{{cafe.cafe_name}}</font>
+    						</div>
+    						<br><br>
+  					</div>
+  					<div class="item">
+    					<img class="ui avatar image" src="/static/images/cafeplace.png">
+    						<div class="content">
+    							<font size="2" color="black">
+      							{{location.address}}</font>
+    						</div>
+    						<br><br>
+  					</div>
+  					<div class="item">
+    					<img class="ui avatar image" src="/static/images/cafeclock.png">
+    						<div class="content">
+    							<font size="2" color="black">
+      							OPEN AT {{cafe.opentime}}</font>
+   	 						</div>
+   	 						<br><br>
+ 					</div>
+  					<div class="item">
+   						<img class="ui avatar image" src="/static/images/cafeclock.png">
+    						<div class="content">
+    							<font size="2" color="black">
+      							CLOSE AT {{cafe.closetime}}</font>
+    						</div>
+ 					</div>
+
+			</div>
+		</center>
+
 			<br><br>
 			<div id="chart_div" style="width: 700px; height: 300px; margin: auto;"></div>
 		{% endif %}
 	</div>
 
 	<div id = "menulist" style ="display:none">
-	{% if menu_list %}
-		<p>	메뉴목록 </p>
-			{% for menu in menu_list %}
-			<div class="gallery" style="width: 200px; height: 250px;">
-				<img src ='{{menu.2}}' onclick="price_recom({{menu.3}})" alt="{{menu.3}}" id="cafeimage" style="width: 200px; height: 200px;">
-				{{menu.0}}<br>{{menu.1}}원
-			</div>
-			{%endfor%}
-			<p> 이 시각, 더 한가한 카페 목록 </p>
-			{% for time_recom in time_result %}
-				<p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>
-			{% endfor %}
-			<br><br>
-			<div id="priceMy">
-			<p> 나의 음료가 더 싼 카페 목록 </p>
-			{% for price_recom in price_result %}
-				<p> {{price_recom.0}} &nbsp;&nbsp;&nbsp; {{price_recom.1}} </p>
-			{% endfor %}
-			</div>
+   {% if menu_list %}
+      <center><font face = size="3" color="black"><b>메뉴목록</b></font></center>
+         {% for menu in menu_list %}
+         <div class="gallery" style="width: 150px; height: 150px;">
+            <center><img class="ui medium  image" src ='{{menu.2}}' onclick="price_recom({{menu.3}})" alt="{{menu.3}}" id="cafeimage" style="width: 100px; height: 100px;"></center>
+            <font size="2" color="black">{{menu.0}}<br>{{menu.1}}원</font>
+         </div>
+         {%endfor%}
+         <p> 이 시각, 더 한가한 카페 목록 </p>
+         {% for time_recom in time_result %}
+            <p> {{time_recom.0}} &nbsp;&nbsp;&nbsp; {{time_recom.1}} </p>
+         {% endfor %}
+         <br><br>
+         <p> 나의 음료가 더 싼 카페 목록 </p>
+         {% for price_recom in price_result %}
+            <p> {{price_recom.0}} &nbsp;&nbsp;&nbsp; {{price_recom.1}} </p>
+         {% endfor %}
 
-	{% else %}
-		<p>	카페를 선택해 주세요. </p>
-	{% endif %}
-	</div>
+   {% else %}
+      <p>   카페를 선택해 주세요. </p>
+   {% endif %}
+   </div>
 
-	<form name="image_price_name" id = "image_price" method="POST" action = "{% url 'price_choice' %}">
+   <form name="image_price_name" id = "image_price" method="POST" action = "{% url 'price_choice' %}">
 		{% csrf_token %}
 		<input type="hidden" id="image_code" name="image_code_name" value="none">
 	</form>
 
 	<iframe id="iframe" src="{% url 'price_choice' %}" name ="iframe"></iframe>
-
 </div>
 
 
@@ -203,8 +195,6 @@ function price_recom(key) {
 	document.getElementById("iframe").style.display = "inline-block";
 	document.getElementById("priceMy").style.display = "none";
 }
-
-
 </script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

@@ -2,11 +2,21 @@
 <head>
 	<title> CafeList - Address </title>
 	<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
+</head>
 </head>
 
 <body>
+<script
+  src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
 
-	<h1> Cafe List </h1>
+<a href="/">
+ 	<img src="/static/images/cafeinlogo.png" height = "15%" width = "25%">
+ </a>
 
 	{% if resultcafe %}
 		{% for cafe in resultcafe %}
@@ -14,7 +24,7 @@
 			{% csrf_token %}
 			<input type="hidden" id="cafeInfo" value={{cafe.0}} name="cafeID">
 			<div>
-				<button onclick="passInfo();"> {{cafe.1}} &nbsp;&nbsp;&nbsp;&nbsp; {{cafe.2}} </button>
+				<button class = "ui tiny orange basic button"onclick="passInfo();"> <font color="black">{{cafe.1}}&nbsp;&nbsp;|&nbsp;&nbsp; {{cafe.2}}</font></button>
 				<br><br>
 			</div>
 		</form>

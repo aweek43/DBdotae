@@ -1,12 +1,23 @@
 <html>
 <head>
-	<title> CafeList - 주소수정하기</title>
+	<title> 주소 수정</title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
 </head>
 
 <body>
+<script
+  src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
 
-	<h1> address List </h1>
+	<a href="/">
+ 	<img src="/static/images/cafeinlogo.png" height = "15%" width = "25%">
+ </a>
+ <br>
+ <h1> 주소를 선택해주세요</h1>
 
 	{% if resultaddress %}
 		{% for address in resultaddress %}
@@ -14,7 +25,7 @@
 			{% csrf_token %}
 			<input type="hidden" id="addressInfo" value={{address.0}} name="addressID">
 			<div>
-				<button onclick="passInfo();"> {{address.1}} </button>
+				<button class = "ui tiny orange basic button" onclick="passInfo();"> <font color="black">{{address.1}} </font></button>
 				<br><br>
 			</div>
 		</form>

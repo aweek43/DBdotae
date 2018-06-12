@@ -2,111 +2,119 @@
 <head>
 	<title> Cafe In </title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="stylesheet" type="text/css" href="/static/mypage.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
 </head>
 
-<style>
 
- h1 {
- 	text-align: center;
- 	margin: auto;
- }
-
- #searchbox {
- 	text-align: center;
- 	margin: auto;
- }
-
-a:link { color: red; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: blue; }
-
- .infobutton {
- 	width: 300px;
- 	height: 50px;
- }
-
- #container {
- 	padding: 10px;
- 	text-align: center;
- 	width: 1000px;
- 	height: 500px;
- 	border-style: wave;
- 	border-color: black;
- 	background-color: gray;
- 	margin: auto;
- }
-
- #couponinfo{
- 	display: none;
- }
-
- #infouser {
- 	background-color:#ADD8E6;
- }
-
-</style>
 
 <body>
+<script
+ src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
 
 	{% if logined_user.username == "null" %}
-		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+		<p style="text-align: right;"><button class = "ui tiny orange button" onclick="login();"> 로그인 </button></p>
 	{% else %}
-		<p style="text-align: right;">{{ logined_user.username }}님
-			<button style=" margin-left: 10px;" onclick="mypage();"> 마이페이지 </button>
-			<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button>
-		</p>
+		<div style="text-align: right;" >
+			<p class="ui orange basic image label"><img src="/static/images/person.png">{{ logined_user.username }}님</p>
+			<button class = "ui tiny orange basic button" onclick="mypage();"> 마이페이지 </button>
+			<button class = "ui tiny orange basic button" onclick="logout();"> 로그아웃 </button>
+		</div>
 	{% endif %}
 
-<a href="/"><h1> Cafe In </h1></a>
+
+ <a href="/">
+ 	<center><img src="/static/images/cafeinlogo.png" height = "17%" width = "30%"></center>
+ </a>
+
 <br>
+<center>
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
-	<select id="select">
+	
+		{% csrf_token %}
+		<div class="ui action input"><input id="search" name="_search" >
+		<select id="select" class="ui compact selection dropdown">
 		<option value="selectcafe"> 카페명 </option>
 		<option value="selectlocation"> 장소명 </option>
 	</select>
-		{% csrf_token %}
-		<input id="search" name="_search">
-		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+		<button type="submit" class="ui orange button" id="searchbutton" onclick="searchcafe();"> 검색 </button></div>
 	</form>
 </div>
+</center>
+
 <br>
+
 <div id = "container">
 	<div id="resultbox">
-		<input type="button" id="infouser" class="infobutton" onclick="showmyInfo();" value="내 정보">
-		<input type="button" id="infocoupon" class="infobutton" onclick="showcouponInfo();" value="쿠폰정보">
+		<input class = "ui tiny orange basic button" type="button" id="infouser" class="infobutton" onclick="showmyInfo();" value="내 정보">
+		<input class = "ui tiny orange basic button" type="button" id="infocoupon" class="infobutton" onclick="showcouponInfo();" value="쿠폰정보">
 	</div>
-
+		<div class = "ui orange divider">
+	</div>
 	<div id="myInfo">
-			
-			<p> 이름: {{logined_user.username}}</p>
-			<br>
-			<p> 나이: {{logined_user.age}}</p>
-			<br>
-			<p> 성별: {{logined_user.sex}}</p>
-			<div id="address_revisable">
+			<center>
+			<div class="ui list">
+				<div class="item">
+					<img class="ui avatar image" src="/static/images/person.png">
+						<div class="content">
+							<font size="2" color="black">{{logined_user.username}}
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/age.png">
+						<div class="content">
+							<font size="2" color="black">{{logined_user.age}}세
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/sex.png">
+						<div class="content"> 
+							<font size="2" color="black">{{logined_user.sex}}
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/cafeplace.png">
+						<div class="content">
+							<div id="address_revisable">
 				<br>
-				<p> 주소: {{logined_user.address}}</p>
-				<input type="button" onclick="address_revise();" value="주소 수정하기">
+				<p> {{logined_user.address}}</p>
+				<input class = "ui tiny orange basic button" type="button" onclick="address_revise();" value="주소 수정하기">
 			</div>
 			<div style="display:none" id= "address_revising">
-				<p> 주소: </p>
+				<p> 주소 </p>
 				<form method="post" id="address_form" name = "address_form">
 					{% csrf_token %}
-					<input id="address" name="_address">
-					<button type="submit" id="searchbutton" onclick="searchaddress();"> 검색 </button>
+					<div class="ui action input"><input id="address" name="_address">
+					<button class = "ui tiny orange button" type="submit" id="searchbutton" onclick="searchaddress();"> 검색 </button></div>
 				</form>
 			</div>
-			<div id="favorite_revisable">
+			</div>
+			<br><br>
+			</div>
+			 	<div class="item">
+  					<img class="ui avatar image" src="/static/images/heart.png">
+						<div class="content">
+							<div id="favorite_revisable">
 				<br>
-				<p> 선호 음료: {{logined_user.favorite}}</p>
-				<input type="button" onclick="favorite_revise();" value="선호음료 수정하기">
+				<p> 선호음료 | {{logined_user.favorite}}</p>
+				<input class = "ui tiny orange basic button" type="button" onclick="favorite_revise();" value="선호음료 수정하기">
 			</div>
 			<div style="display:none" id= "favorite_revising">
 				<br>
 				<form method="post" id="select_form" name = "select_form">
 					{% csrf_token %}
-					<p> 선호 음료:</p>
+					<p> 선호 음료</p>
 					{% if favoritelist %}
 					{% for favorite in favoritelist %}
 						<input type="radio" name="choice" id="choice{{ favorite }}" value="{{ favorite }}" />
@@ -114,11 +122,14 @@ a:link { color: red; text-decoration: none;}
 					{% endfor %}
 					{% endif %}
 						<br><br>
-					  <input type = "submit" value = "수정완료" onclick = "complete()">
+					  <input class = "ui tiny orange button"type = "submit" value = "수정완료" onclick = "complete()">
 				</form> 
 			</div>
-
-	</div>
+			</div>
+			<br><br>
+			</div>
+				</div>
+			</center>
 
 	<div id="couponInfo">
 			{% if couponlist %}

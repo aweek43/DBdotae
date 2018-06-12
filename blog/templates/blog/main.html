@@ -2,59 +2,51 @@
 <head>
 	<title> Cafe In </title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
 </head>
 
-<style>
-
- a:link { color: red; text-decoration: none;}
- a:visited { color: black; text-decoration: none;}
- a:hover { color: blue;}
-
- h1 {
- 	text-align: center;
- 	margin: auto;
- 	margin-top: 10%;
- }
-
- #searchbox {
- 	text-align: center;
- 	margin: auto;
- 	margin-top: 7%;
- }
-
-
- .infobutton {
- 	width: 300px;
- 	height: 50px;
- }
-
-
-</style>
 
 <body>
+<script
+  src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
+<br>
 
 	{% if logined_user.username == "null" %}
-		<p style="text-align: right;">비로그인<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="login();"> Login </button></p>
+		<p style="text-align: right;"><button class = "ui tiny orange button" onclick="login();"> 로그인 </button></p>
 	{% else %}
-		<p style="text-align: right;">{{ logined_user.username }}님
-			<button style=" margin-left: 10px;" onclick="mypage();"> 마이페이지 </button>
-			<button style="float:right; margin-right: 20%; margin-left: 10px;" onclick="logout();"> LogOut </button>
-		</p>
+		<div style="text-align: right;" >
+			<p class="ui orange basic image label"><img src="/static/images/person.png">{{ logined_user.username }}님</p>
+			<button class = "ui tiny orange basic button" onclick="mypage();"> 마이페이지 </button>
+			<button class = "ui tiny orange basic button" onclick="logout();"> 로그아웃 </button>
+		</div>
 	{% endif %}
 
-<a href="/"><h1> Cafe In </h1></a>
 
+
+
+ <a href="/">
+ 	<center><img src="/static/images/cafeinlogo.png" height = "19%" width = "30%"></center>
+ </a>
+
+
+<center>
 <div id="searchbox">
 	<form method="POST" action="" id="searchsubmit">
-	<select id="select">
+	
+		{% csrf_token %}
+		<div class="ui action input"><input id="search" name="_search" >
+		<select id="select" class="ui compact selection dropdown">
 		<option value="selectcafe"> 카페명 </option>
 		<option value="selectlocation"> 장소명 </option>
 	</select>
-		{% csrf_token %}
-		<input id="search" name="_search">
-		<button type="submit" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+		<button type="submit" class="ui orange button" id="searchbutton" onclick="searchcafe();"> 검색 </button></div>
 	</form>
 </div>
+</center>
 
 
 

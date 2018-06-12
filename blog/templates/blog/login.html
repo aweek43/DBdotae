@@ -1,12 +1,14 @@
 <html>
 <head>
-	<title> Cafe In - Login </title>
+	<title> Login </title>
 	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/static/semantic/dist/semantic.min.css">
+	<link rel="shortcut icon" href="/static/images/taplogo.png"/>
 </head>
 
 <style>
  h1 {
- 	font-family: cursive;
+ 	font-family:'Malgun Gothic';;
  	text-align: center;
  	margin: auto;
  	margin-top: 5%;
@@ -15,18 +17,26 @@
 </style>
 
 <body>
+<script
+  src="/static/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="/static/semantic/dist/semantic.min.js"></script>
 
-<h1> Cafe In </h1>
+ 
+ 	<center><img src="/static/images/cafeinlogo.png" height = "17%" width = "30%"></center>
+
 <br>
 
-
+<center>
 <form method="post" action="">
 	{% csrf_token %}
-	<p style="text-align:center;">	아이디 : 
-	<input name ="user_id" type="text">
-	<input type="submit" value="login" />
+	<p style="text-align:center;">
+	<div class="ui action input"><font size = "3"><b>ID</b></font><input name ="user_id" type="text"></div>
+	<input class="ui orange button" type="submit" value="login" />
 	 </p> 
 </form>
+</center>
 
 </body>
 </html>

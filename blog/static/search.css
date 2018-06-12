@@ -1,0 +1,64 @@
+<style>
+
+ h1 {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ a:link { color: red; text-decoration: none;}
+ a:visited { color: black; text-decoration: none;}
+ a:hover { color: blue;}
+
+ #searchbox {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ .infobutton {
+ 	width: 300px;
+ 	height: 50px;
+ }
+
+  #resultbox {
+ 	text-align: center;
+ 	margin: auto;
+ }
+
+ #container {
+ 	padding: 10px;
+ 	text-align: center;
+ 	width: 1000px;
+ 	height: 700px;
+ 	border-style: wave;
+ 	border-color: orange;
+ 	background-color: white;
+ 	margin: auto;
+ }
+
+  div.gallery {
+    margin: 10px;
+    border: 2px solid orange ;
+    float: left;
+    width: 100px;
+}
+
+div.gallery:hover {
+    border: 1px solid orange;
+}
+
+div.gallery img {
+    width: 100%;
+    height: auto;
+}
+
+div.desc {
+    padding: 15px;
+    text-align: center;
+}
+
+#iframe {
+    display: none;
+}
+font-family:'Malgun Gothic';
+
+</style>
