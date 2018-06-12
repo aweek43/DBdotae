@@ -18,10 +18,9 @@
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
 <script src="/static/semantic/dist/semantic.min.js"></script>
-
-	<p class = "ui orange label"> 주변에서 이 음료가 싼 카페 </p>
-	<br><br>
 	{% if price_result %}
+	<p class = "ui orange label"> 주변에서 {{menu_name}}가 싼 카페 </p>
+	<br><br>
 		{% for cafe in price_result %}
 				<p>{{cafe.0}} | {{cafe.1}} </p>
 		{% endfor %}

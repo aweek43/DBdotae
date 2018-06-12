@@ -214,6 +214,9 @@ def price_choice(request):
 	price_result = []
 	if request.method == "POST":
 		clickmenu = request.POST.get('image_code_name')
+		cursor.execute("SELECT MENU_NAME FROM MENUCODE WHERE MENU_CODE = ?", clickmenu)
+		row = cursor.fetchone()
+		menu_name = row.MENU_NAME
 		price_result = []
 		cursor.execute("SELECT * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ?  order by price ) where rownum <= 1000);", cafe.location_id, cafe.cafe_id, clickmenu)
 		rows = cursor.fetchall()
@@ -224,4 +227,4 @@ def price_choice(request):
 			temp.append(rows[i].CAFE_NAME)
 			temp.append(rows[i].CAFE_ADDRESS)
 			price_result.append(temp)
-	return render(request, 'blog/price_choice.html', {"price_result":price_result})
+	return render(request, 'blog/price_choice.html', {"price_result":price_result, "menu_name" : menu_name})
