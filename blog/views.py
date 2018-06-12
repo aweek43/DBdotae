@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import *
 import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=tibero")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
 cursor = conn.cursor()
 
 logined_user = User()
@@ -215,7 +215,7 @@ def price_choice(request):
 	if request.method == "POST":
 		clickmenu = request.POST.get('image_code_name')
 		price_result = []
-		cursor.execute("SELECT * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ? order by price ) where rownum <= 1000);", cafe.location_id, cafe.cafe_id, clickmenu)
+		cursor.execute("SELECT * from (select * from cafe where location_id = ? and cafe_id <> ? ) where cafe_id = ANY (select * from  (select cafe_id from menu where menu_code = ?  order by price ) where rownum <= 1000);", cafe.location_id, cafe.cafe_id, clickmenu)
 		rows = cursor.fetchall()
 		for i in range(len(rows)):
 			if i == 2:

@@ -5,6 +5,9 @@
  	margin: auto;
  }
 
+body{
+    font-family:'Malgun Gothic';
+}
  a:link { color: red; text-decoration: none;}
  a:visited { color: black; text-decoration: none;}
  a:hover { color: blue;}
@@ -59,6 +62,6 @@ div.desc {
 #iframe {
     display: none;
 }
-font-family:'Malgun Gothic';
+
 
 </style>
