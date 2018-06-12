@@ -22,9 +22,9 @@
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
 <script src="/static/semantic/dist/semantic.min.js"></script>
-
+<br><br>
  
- 	<center><img src="/static/images/cafeinlogo.png" height = "17%" width = "30%"></center>
+ 	<center><img src="/static/images/cafeinlogo.png" height = "150px" width = "480px"></center>
 
 <br>
 
@@ -32,8 +32,8 @@
 <form method="post" action="">
 	{% csrf_token %}
 	<p style="text-align:center;">
-	<div class="ui action input"><font size = "3"><b>ID</b></font><input name ="user_id" type="text"></div>
-	<input class="ui orange button" type="submit" value="login" />
+	<div class="ui labeled input"><div class = "ui label">ID</div><input name ="user_id" type="text">
+	<input class="ui orange button" type="submit" value="login" /></div>
 	 </p> 
 </form>
 </center>

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from .models import *
 import datetime
 import pyodbc
-conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=tibero")
+conn = pyodbc.connect("DSN=TIBERO;UID=DBdotae;PWD=dbdotae")
 cursor = conn.cursor()
 
 logined_user = User()
