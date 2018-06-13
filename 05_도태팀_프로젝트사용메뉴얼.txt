@@ -1,0 +1,11 @@
+1. 티베로 설치
+2. 파이썬 64bit 설치
+3. ODBC 관리자 64bit에 TIBERO DSN 설정
+4. Django, pyodbc 모듈 설치(pip 이용)
+5. 티베로에서 아이디: DBdotae, 패스워드:dbdotae 유저 생성 후 권한 부여(GRANT)
+6. CafeIn폴더 생성 후 그 안에 https://github.com/KGH21433/DBdotae 다운로드
+7. 다운로드 받은 폴더 루트 경로의 DBdotae.dat 파일 티베로에 import
+8. CMD창에서 CafeIn\myvenv\Scripts 경로로 이동 후 activate.bat 실행
+9. CMD창에서 CafeIn 경로로 이동 후 python manage.py runserver 실행
+10. 정상 실행 확인 후 인터넷 브라우저 주소에 127.0.0.1:8000 입력
+11. 완료
