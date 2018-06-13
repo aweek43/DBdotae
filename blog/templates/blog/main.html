@@ -39,12 +39,14 @@
 	<form method="POST" action="" id="searchsubmit">
 	
 		{% csrf_token %}
-		<div class="ui action input"><input id="search" name="_search" >
-		<select id="select" class="ui compact selection dropdown">
-		<option value="selectcafe"> 카페명 </option>
-		<option value="selectlocation"> 장소명 </option>
-	</select>
-		<button type="submit" class="ui orange button" id="searchbutton" onclick="searchcafe();"> 검색 </button></div>
+		<div class="ui action input">
+			<input id="search" name="_search" >
+			<select id="select" class="ui compact selection dropdown" style="height:50px;">
+				<option value="selectcafe"> 카페명 </option>
+				<option value="selectlocation"> 장소명 </option>
+			</select>
+			<button type="submit" class="ui orange button" id="searchbutton" onclick="searchcafe();"> 검색 </button>
+		</div>
 	</form>
 </div>
 </center>

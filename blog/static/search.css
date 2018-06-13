@@ -47,6 +47,7 @@ body{
 
 div.gallery:hover {
     border: 1px solid orange;
+    cursor: pointer;
 }
 
 div.gallery img {
