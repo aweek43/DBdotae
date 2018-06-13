@@ -54,59 +54,61 @@
 		<input class = "ui tiny orange basic button" type="button" id="infouser" class="infobutton" onclick="showmyInfo();" value="내 정보">
 		<input class = "ui tiny orange basic button" type="button" id="infocoupon" class="infobutton" onclick="showcouponInfo();" value="쿠폰정보">
 	</div>
-
-		<div class = "ui orange divider"></div>
-		<div id="myInfo">
-				<center>
-				<div class="ui list">
-					<div class="item">
-						<img class="ui avatar image" src="/static/images/person.png">
-							<div class="content">
-								<font size="2" color="black">{{logined_user.username}}</font>
-	    					</div>
-	    					<br><br>
-	  				</div>
-	  				<div class="item">
-	  					<img class="ui avatar image" src="/static/images/age.png">
-							<div class="content">
-								<font size="2" color="black">{{logined_user.age}}세</font>
-	    					</div>
-	    					<br><br>
-	  				</div>
-	  				<div class="item">
-	  					<img class="ui avatar image" src="/static/images/sex.png">
-							<div class="content"> 
-								<font size="2" color="black">{{logined_user.sex}}</font>
-	    					</div>
-	    					<br><br>
-	  				</div>
-	  				<div class="item">
-	  					<img class="ui avatar image" src="/static/images/cafeplace.png">
-							<div class="content">
-								<div id="address_revisable">
-									<br>
-									<p> {{logined_user.address}}</p>
-									<input class = "ui tiny orange basic button" type="button" onclick="address_revise();" value="주소 수정하기">
-								</div>
-								<div style="display:none" id= "address_revising">
-									<p> 주소 </p>
-									<form method="post" id="address_form" name = "address_form">
-									{% csrf_token %}
-										<div class="ui action input"><input id="address" name="_address">
-											<button class = "ui tiny orange button" type="submit" id="searchbutton" onclick="searchaddress();"> 검색 </button>
-										</div>
-									</form>
-								</div>
-							</div>
-							<br><br>
-					</div>
-			 		<div class="item">
-	  					<img class="ui avatar image" src="/static/images/heart.png">
-							<div class="content">
-								<div id="favorite_revisable">
-									<br>
-									<p> 선호음료 | {{logined_user.favorite}}</p>
-									<input class = "ui tiny orange basic button" type="button" onclick="favorite_revise();" value="선호음료 수정하기">
+		<div class = "ui orange divider">
+	</div>
+	<div id="myInfo">
+			<center>
+			<div class="ui list">
+				<div class="item">
+					<img class="ui avatar image" src="/static/images/person.png">
+						<div class="content">
+							<font size="2" color="black">{{logined_user.username}}
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/age.png">
+						<div class="content">
+							<font size="2" color="black">{{logined_user.age}}세
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/sex.png">
+						<div class="content"> 
+							<font size="2" color="black">{{logined_user.sex}}
+								</font>
+    						</div>
+    						<br><br>
+  					</div>
+  				<div class="item">
+  					<img class="ui avatar image" src="/static/images/cafeplace.png">
+						<div class="content">
+							<div id="address_revisable">
+				<br>
+				<p> {{logined_user.address}}</p>
+				<input class = "ui tiny orange basic button" type="button" onclick="address_revise();" value="주소 수정하기">
+			</div>
+			<div style="display:none" id= "address_revising">
+				<p> 주소 </p>
+				<form method="post" id="address_form" name = "address_form">
+					{% csrf_token %}
+					<div class="ui action input"><input id="address" name="_address">
+					<button class = "ui tiny orange button" type="submit" id="searchbutton" onclick="searchaddress();"> 검색 </button></div>
+				</form>
+			</div>
+			</div>
+			<br><br>
+			</div>
+			 	<div class="item">
+  					<img class="ui avatar image" src="/static/images/heart.png">
+						<div class="content">
+							<div id="favorite_revisable">
+				<br>
+				<p> 선호음료 | {{logined_user.favorite}}</p>
+				<input class = "ui tiny orange basic button" type="button" onclick="favorite_revise();" value="선호음료 수정하기">
 			</div>
 			<div style="display:none" id= "favorite_revising">
 				<br>
@@ -128,17 +130,34 @@
 			</div>
 				</div>
 			</center>
-
+	</div>		
 	<div id="couponInfo">
 			{% if couponlist %}
-				{% for coupon in couponlist %}
-				<p>{{ coupon.cafe_name }} {{coupon.count}} / 10</p>
-				{% endfor %}
+				<table style="margin-top: 7px" class="ui celled striped collapsing table">
+     <thead>
+       <tr>
+           <th>카페명</th>
+            <th >쿠폰 수</th>
+     </tr></thead>
+     <tbody>
+        {% for coupon in couponlist %}
+         <tr>
+            <td class="collapsing">
+               {{ coupon.cafe_name }}
+            </td>
+            <td class="center aligned">
+            	{{coupon.count}}
+            </td>
+           
+          </tr>
+       {% endfor %} 
+   </table>
 			{% else %}
 				<p> 쿠폰이 없네요! 모아봅시다. </p>
 			{% endif %}
 			<br>
 	</div>
+</center>
 </div>
 
 
