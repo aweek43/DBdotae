@@ -69,6 +69,11 @@ def search(request):
 		current = str(current[0])
 		current += ":00:00"
 
+		# 현재 시각 조작용(실제 실행 시 주석 처리)
+		# current = "14:00:00"
+		# c_current = 14
+		###############################
+
 		menu_list = []
 		cursor.execute("SELECT * from menu where cafe_id = ?", cafe.cafe_id)
 		rows = cursor.fetchall()
